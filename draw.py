@@ -37,7 +37,7 @@ def draw_single(drawing,x1,y1,l1,l2,l3,l4,angle):
 
 
 def cal(S,x):
-    rate = 0.05
+    rate = 0.015
     ans = S//(x*x)
     result = []
     for a in range(3,ans+1):
@@ -58,24 +58,22 @@ def cal(S,x):
 
     return result
 
-
-if __name__ == '__main__':
-    S=1500
-    x=9
-    res = cal(S,x)
-    for ans in res:
-        print(ans)
-        print(ans)
-        print(ans)
+def main(path):
+    S = 1200
+    x = 9
+    res = cal(S, x)
+    # for ans in res:
+    #     print(ans)
+    #     print(ans)
+    #     print(ans)
     print(res)
     print(len(res))
-    x1,y1=0,0
+    x1, y1 = 0, 0
     cnt = 0
     num = 0
-'''
     for ans in res:
         if cnt%5 == 0:
-            drawing = dxf.drawing('data'+str(num)+'.dxf')
+            drawing = dxf.drawing(path+'/data'+str(num)+'.dxf')
             num += 1
         d = max(ans[0], ans[1], ans[2], ans[3])
         draw_single(drawing, x1, y1,ans[0],ans[1],ans[2],ans[3],1)
@@ -88,5 +86,9 @@ if __name__ == '__main__':
 
     if cnt%5 < 4:
         drawing.save()
-'''
+
+
+if __name__ == '__main__':
+    main('')
+    
 
