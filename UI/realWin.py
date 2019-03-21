@@ -1,4 +1,6 @@
 import sys
+from PyQt5 import QtGui
+
 from dxfwrite import DXFEngine as dxf
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
@@ -18,6 +20,9 @@ class SignInWidget(QWidget):
         self.resize(600, 400)
         # self.setStyleSheet("background: black")
         self.setWindowTitle("demo")
+        window_pale = QtGui.QPalette()
+        window_pale.setBrush(self.backgroundRole(), QtGui.QBrush(QtGui.QPixmap("C://Users/Yuusha/Desktop/bg.jpg")))
+        self.setPalette(window_pale)
         self.second = SecondWindow()
         # self.flag = True
         # self.S = 1
@@ -35,7 +40,7 @@ class SignInWidget(QWidget):
 
         self.label1 = QLabel("面积: ")
         labelFont = QFont()
-        labelFont.setPixelSize(18)
+        labelFont.setPixelSize(24)
         lineEditFont = QFont()
         lineEditFont.setPixelSize(16)
         self.label1.setFont(labelFont)
@@ -47,17 +52,22 @@ class SignInWidget(QWidget):
 
         self.formlayout.addRow(self.label1, self.lineEdit1)
 
+        self.lineEdit2 = QComboBox()
+        self.lineEdit2.addItems(["9.0", "8.7", "8.4", "8.1", "7.8", "7.5", "7.2", "6.9", "6.6", "6.3", "6.0"])  # 添加多个项目
+        # self.cb.currentIndexChanged.connect(self.selectionchange)
+
         self.label2 = QLabel("柱网间距: ")
         self.label2.setFont(labelFont)
-        self.lineEdit2 = QLineEdit()
+        # self.lineEdit2 = QLineEdit()
         self.lineEdit2.setFixedHeight(32)
         self.lineEdit2.setFixedWidth(100)
         self.lineEdit2.setFont(lineEditFont)
-        self.lineEdit2.setMaxLength(16)
+        # self.lineEdit2.setMaxLength(16)
+
 
         self.formlayout.addRow(self.label2, self.lineEdit2)
 
-        self.label3 = QLabel("最优个数: ")
+        self.label3 = QLabel("面积误差(%): ")
         self.label3.setFont(labelFont)
         self.lineEdit3 = QLineEdit()
         self.lineEdit3.setFixedHeight(32)
@@ -76,10 +86,10 @@ class SignInWidget(QWidget):
         self.Hlayout4.addWidget(self.ok)
 
         self.formlayout.setVerticalSpacing(20)
-        self.label = QLabel("仅支持U型建筑")
+        self.label = QLabel("U型建筑能耗预测")
         fontlabel = QFont()
-        fontlabel.setPixelSize(30)
-        self.label.setFixedWidth(390)
+        fontlabel.setPixelSize(40)
+        self.label.setFixedWidth(300)
         # self.label.setFixedHeight(80)
         self.label.setFont(fontlabel)
         self.Hlayout1.addWidget(self.label, Qt.AlignCenter)
@@ -100,6 +110,11 @@ class SignInWidget(QWidget):
         # self.lineEdit2.returnPressed.connect(self.signInCheck)
         # self.lineEdit1.returnPressed.connect(self.signInCheck)
 
+    # def selectionchange(self, i):
+    #     for count in range(self.cb.count()):
+    #         self.cb.itemText(count)
+
+
     def slotInfo(self):
         QMessageBox.information(self, "Information",
                                 self.tr("字段不能为空!"))
@@ -114,7 +129,7 @@ class SignInWidget(QWidget):
             self.slotInfo()
         else:
             S = int(self.lineEdit1.text())
-            x = int(self.lineEdit2.text())
+            x = float(self.lineEdit2.text())
             rate = int(self.lineEdit3.text())
             self.second.setValue(S,x,rate)
             self.second.handle_click()
@@ -130,10 +145,14 @@ class SecondWindow(QWidget):
     def __init__(self, parent=None):
         super(SecondWindow, self).__init__(parent)
         self.resize(1250, 750)
+        window_pale = QtGui.QPalette()
+        window_pale.setBrush(self.backgroundRole(), QtGui.QBrush(QtGui.QPixmap("C://Users/Yuusha/Desktop/bg.jpg")))
+        self.setPalette(window_pale)
         self.S = 1
         self.x = 1
         self.rate = 1
         self.res = []
+
         self.table()
 
 
@@ -141,8 +160,9 @@ class SecondWindow(QWidget):
         if not self.isVisible():
             self.show_data()
             self.show()
+
     def setRes(self,res):
-        self.res = res;
+        self.res = res
 
     def getRes(self):
         return self.res
@@ -173,6 +193,7 @@ class SecondWindow(QWidget):
         self.Vlayout = QVBoxLayout(self)
         self.Hlayout1 = QHBoxLayout()
         self.Hlayout3 = QHBoxLayout()
+        self.Hlayout2 = QHBoxLayout()
 
         self.lineEdit4 = QLineEdit()
         self.lineEdit4.setFixedHeight(32)
@@ -209,6 +230,9 @@ class SecondWindow(QWidget):
         for i in range(10):
             self.qtable.setCellWidget(i, 7, self.qtable.cb[i])
 
+        self.qp = QPainter()
+        self.qp.begin(self)
+
 
     def selectN(self,total, energy, n):
         res = []
@@ -228,6 +252,7 @@ class SecondWindow(QWidget):
     def show_data(self):
         S,x,rate = self.getValue()
         total = draw.cal(S, x, rate * 0.01)
+        print(total)
         # print(self.S)
         # total = draw.cal(self.S, self.x, self.rate * 0.01)
         energy = Log.estimation(total)

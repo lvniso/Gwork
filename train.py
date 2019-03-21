@@ -4,7 +4,7 @@ import pandas as pd
 
 from sklearn.model_selection import train_test_split
 from sklearn import linear_model
-file = pd.read_csv('data2.csv',header=None)
+file = pd.read_csv('data/data2.csv',header=None)
 data = file.values
 base = 1
 # print(data[:,:-1])
