@@ -7,7 +7,7 @@ from sklearn import linear_model
 current_path = os.path.dirname(__file__)
 
 def data():
-    file = pd.read_csv(current_path + '/data2.csv', header=None)
+    file = pd.read_csv(current_path + '/data3.csv', header=None)
     data = file.values
     base = 1
     data_X = [[0 for col in range(6)] for row in range(len(data))]
@@ -26,6 +26,8 @@ def data():
             data_X[i][5] = 2 * base
         elif data[i][5] == 'SE':
             data_X[i][5] = 3 * base
+        else:
+            data_X[i][5] = int(data[i][5])*base
         data_Y[i] = data[i][7]
     # data_Y = data[:,-1]
     X_train, X_test, Y_train, Y_test = train_test_split(data_X, data_Y, test_size=0.2, random_state=0)
@@ -49,6 +51,7 @@ if __name__ == '__main__':
     X_train, X_test, Y_train, Y_test = data()
     model = mol()
     Y_pre = estimation(X_test)
+    print(X_test)
     print(Y_pre)
     print(Y_test)
     sum_mean=0
@@ -61,6 +64,6 @@ if __name__ == '__main__':
     plt.plot(range(len(Y_pre)),Y_pre,'b',label="predict")
     plt.plot(range(len(Y_pre)),Y_test,'r',label="test")
     plt.legend(loc="upper right") #显示图中的标签
-    plt.xlabel("the number of sales")
-    plt.ylabel('value of sales')
+    plt.xlabel("No.")
+    plt.ylabel('the number of energy')
     plt.show()

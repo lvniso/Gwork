@@ -57,10 +57,10 @@ def cal(S, x, rate):
                         continue
                     if (a * b - c * d) * x * x >= S * (1 - rate) and (a * b - c * d) * x * x <= S * (1 + rate):
                         # result.append([a*x,b*x,c*x,d*x,(a*b-c*d)*x*x])
-                        # result.append([a * x / 10, b * x / 10, c * x / 10, d * x / 10, 1])
-                        # result.append([a * x / 10, b * x / 10, c * x / 10, d * x / 10, 2])
-                        # result.append([a * x / 10, b * x / 10, c * x / 10, d * x / 10, 3])
-                        result.append([a * x / 10, b * x / 10, c * x / 10, d * x / 10])
+                        result.append([a * x / 10, b * x / 10, c * x / 10, d * x / 10, 1])
+                        result.append([a * x / 10, b * x / 10, c * x / 10, d * x / 10, 2])
+                        result.append([a * x / 10, b * x / 10, c * x / 10, d * x / 10, 3])
+                        # result.append([a * x / 10, b * x / 10, c * x / 10, d * x / 10])
                     elif (a * b - c * d) * x * x > S * (1 + rate):
                         continue
     return result
@@ -72,7 +72,9 @@ def main(path):
     ss = [1200, 1500, 1800, 2100, 2400, 2700, 3000]
     xx = [9, 8.7, 8.4, 8.1, 7.8, 7.5, 7.2, 6.9, 6.6, 6.3, 6]
     rate = 0.02
+    res = []
     res = cal(S, x, rate)
+
     # for ans in res:
     #     print(ans)
     #     print(ans)
@@ -98,7 +100,9 @@ def main(path):
                 cnt-=1
                 continue
             if len(ans) == 4:
-                res.append([float(ans[0]),float(ans[1]),float(ans[2]),float(ans[3])])
+                res.append([float(ans[0]),float(ans[1]),float(ans[2]),float(ans[3]),1])
+                res.append([float(ans[0]), float(ans[1]), float(ans[2]), float(ans[3]),2])
+                res.append([float(ans[0]), float(ans[1]), float(ans[2]), float(ans[3]),3])
                 cnt = tmp
             elif len(ans) == 1:
                 numm = ans[0].split(' ')
@@ -128,23 +132,23 @@ def main(path):
     print(len(res))
     print(res)
     x1, y1 = 0, 0
-    cnt = 0
-    num = 0
-    for ans in res:
-        if cnt % 5 == 0:
-            drawing = dxf.drawing('data/pic' + str(num) + '.dxf')
-            num += 1
-        d = max(ans[0], ans[1], ans[2], ans[3])
-        draw_single(drawing, x1, y1, ans[0], ans[1], ans[2], ans[3], 1)
-        draw_single(drawing, x1, y1 - 2 * d, ans[0], ans[1], ans[2], ans[3], 2)
-        draw_single(drawing, x1, y1 - 4 * d, ans[0], ans[1], ans[2], ans[3], 3)
-        if cnt % 5 == 4:
-            drawing.save()
-        x1 += 2 * d
-        cnt += 1
-
-    if cnt % 5 < 4:
-        drawing.save()
+    # cnt = 0
+    # num = 0
+    # for ans in res:
+    #     if cnt % 5 == 0:
+    #         drawing = dxf.drawing('data/pic' + str(num) + '.dxf')
+    #         num += 1
+    #     d = max(ans[0], ans[1], ans[2], ans[3])
+    #     draw_single(drawing, x1, y1, ans[0], ans[1], ans[2], ans[3], 1)
+    #     draw_single(drawing, x1, y1 - 2 * d, ans[0], ans[1], ans[2], ans[3], 2)
+    #     draw_single(drawing, x1, y1 - 4 * d, ans[0], ans[1], ans[2], ans[3], 3)
+    #     if cnt % 5 == 4:
+    #         drawing.save()
+    #     x1 += 2 * d
+    #     cnt += 1
+    #
+    # if cnt % 5 < 4:
+    #     drawing.save()
 
 
 if __name__ == '__main__':
