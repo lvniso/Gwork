@@ -1,3 +1,5 @@
+import os
+
 def selectN(total, energy, n):
     res = []
     for i in range(len(energy)):
@@ -10,3 +12,18 @@ def selectN(total, energy, n):
     if len(res) < n:
         return res
     return res[:n]
+
+
+def check_filename(filename):
+    n=[0]
+    def check_meta(file_name):
+        file_name_new = file_name
+        if os.path.isfile(file_name):
+            file_name_new=file_name[:file_name.rfind('.')]+'_'+str(n[0])+file_name[file_name.rfind('.'):]
+            n[0]+=1
+        if os.path.isfile(file_name_new):
+            file_name_new=check_meta(file_name)
+        return file_name_new
+
+    return_name = check_meta(filename)
+    return return_name
